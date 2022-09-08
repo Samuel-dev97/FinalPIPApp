@@ -1,0 +1,32 @@
+﻿@namespace Client.Pages.User
+@layout UserLayout
+@page "/user/login"
+@page "/"
+
+@attribute [AllowAnonymous]
+
+<div class="contact-form">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6">
+     @*   <div style="justify-content:center; padding-left:25px;padding-bottom:15px" class="d-flex justify-center">
+                    <img class="center" src="./assets/login" alt="logo" width="256" />
+                </div>*@
+        <Form Model="@_model" OnFinish="HandleSubmit">
+            <div class="form-group">
+                <label class="control-label">User Email</label>
+                <Input Placeholder="Enter Email Address" Size="large" @bind-Value="@context.Email" Type="email"> 
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <Input Placeholder="Enter Password" Size="large" @bind-Value="@context.Password" Type="password">
+            </div>
+            <div class="form-group">
+
+                <Button Type="primary" HtmlType="submit" Class="submit" Size="large" Block Loading="loading">Login</Button>
+               
+            </div
+        </Form>
+    </div>
+    <div class="col-sm-4"></div>
+
+</div>

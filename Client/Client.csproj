@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Layouts\AuthLayout.razor" />
+    <Content Remove="Layouts\NavMenu.razor" />
+    <Content Remove="Layouts\NotFound.razor" />
+    <Content Remove="Pages\Reports\Employees\EmployeesRpt.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\DepartmentBudgets\DepartmentBudgets.razor~RFabce7e8.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AntDesign.Charts" Version="0.2.1" />
+    <PackageReference Include="AntDesign.ProLayout" Version="0.1.10" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Syncfusion.Blazor" Version="20.1.0.58" />
+    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="20.1.0.60" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="10.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <CopyLocal>True</CopyLocal>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Layouts\AuthLayout.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Layouts\AuthLayout.razor" />
+    <_ContentIncludedByDefault Remove="Layouts\NavMenu.razor" />
+    <_ContentIncludedByDefault Remove="Layouts\NotFound.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Reports\Employees\EmployeesRpt.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Layouts\AuthLayout.razor" />
+    <None Include="Layouts\NavMenu.razor" />
+    <None Include="Layouts\NotFound.razor" />
+    <None Include="Pages\Dashboard\Index.razor" />
+    <None Include="Pages\Reports\Employees\EmployeesRpt.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Reports\Employees\EmployeesRpt.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Layouts\NotFound.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Layouts\NavMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+</Project>

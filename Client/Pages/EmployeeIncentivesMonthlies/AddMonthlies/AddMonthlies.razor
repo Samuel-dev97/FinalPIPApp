@@ -1,0 +1,206 @@
+﻿
+@page "/calculate"
+
+
+
+
+<PageContainer Title="DASHBOARD">
+    <div style="padding: 20px;">
+        <Row Gutter="16">
+
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:green" Type="home" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        DEPARTMENTS
+                    </Row>
+                    <Row>
+                        @*@townCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:darkmagenta" Type="home" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        PAYGRADES
+                    </Row>
+                    <Row>
+                       @* @companyCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:orangered" Type="home" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        INCENTIVES
+                    </Row>
+                    <Row>
+                       @* @locationCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:red" Type="home" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        EMPLOYEES
+                    </Row>
+                    <Row>
+                        @*@guardCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+        </Row>
+    </div>
+  
+<div class="col-md-3">
+   
+    
+   <Input Placeholder="Expected PIP" @bind-Value="@AddEditEmployeeIncentiveMonthlies.ExpectedPIPPayable" >
+        <Prefix>
+            <Icon Type="cash" />
+        </Prefix>
+    </Input>
+    <br />
+    <br />
+     <Input Placeholder="Actual PIP" @bind-Value="@AddEditEmployeeIncentiveMonthlies.ActualPIPPayable" >
+        <Prefix>
+            <Icon Type="cash" />
+        </Prefix>
+    </Input>
+    <br />
+    <br />
+    <Input Placeholder="MD Penalty" @bind-Value="@AddEditEmployeeIncentiveMonthlies.MDPenalty" >
+        <Prefix>
+            <Icon Type="user" />
+        </Prefix>
+    </Input>
+     <br />
+    <br />
+    <Input Placeholder="Percentage Score" @bind-Value="@AddEditEmployeeIncentiveMonthlies.PercentageScore" >
+        <Prefix>
+            <Icon Type="percentage" />
+        </Prefix>
+    </Input>
+     </div>
+    
+
+
+
+<hr />
+<div>
+@*    <div class="row">
+        <div class="col-md-3">
+            <p>First Number</p>
+        </div>
+        <div class="col-md-4">
+            <input placeholder="Enter First Number" @bind="@num1" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <p>Second Number</p>
+        </div>
+        <div class="col-md-4">
+            <input placeholder="Enter Second Number" @bind="@num2" />
+        </div>
+    </div>*@
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <p>Result</p>
+        </div>
+        <div class="col-md-4">
+            <input readonly @bind="@AddEditEmployeeIncentiveMonthlies.ExpectedPIPPayable" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <Button Type="@ButtonType.Primary" Style="background-color: blueviolet;border-block-color: blue"  @onclick="Calculate">Submit</Button>
+             <Button Type="@ButtonType.Primary" Style="background-color: green;border-block-color: green"  @onclick="Calculate">Calculate</Button>
+        </div>
+        <br />
+        <br />
+        @*<div class="col-md-2">
+            <button @onclick="SubtractNumbers" class="btn btn-primary">Subtract (−)</button>
+        </div>*@
+         @*<div class="col-md-2">
+          @*  <button @onclick="Calculate" class="btn btn-light">Add (+)</button>
+             <Button Type="@ButtonType.Primary" Style="background-color: blueviolet;border-block-color: blue"  @onclick="Calculate">Submit</Button>
+        </div>
+        @*<div class="col-md-2">
+            <button @onclick="DivideNumbers" class="btn btn-info">Divide (/)</button>
+        </div>*@
+    </div>
+</div>
+</PageContainer>
+
+@code { string actualPip;
+            string score;
+            string expectedPip;
+            string mdPenalty;
+            void AddNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) + Convert.ToDouble(score)).ToString();
+            }
+            // void Calculate()
+            //{
+            //    expectedPip = (Convert.ToDouble(actualPip) * Convert.ToDouble(score) - Convert.ToDouble(mdPenalty) ).ToString();
+            //}
+            void SubtractNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) - Convert.ToDouble(score)).ToString();
+            }
+            void MultiplyNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) * Convert.ToDouble(score)).ToString();
+            }
+            void DivideNumbers()
+            {
+                if (Convert.ToDouble(score) != 0)
+                {
+                    expectedPip = (Convert.ToDouble(actualPip) / Convert.ToDouble(score)).ToString();
+                }
+                else
+                {
+                    expectedPip = "Cannot Divide by Zero";
+                }
+            } 
+            private string txtValue { get; set; }
+            }

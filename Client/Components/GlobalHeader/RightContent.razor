@@ -1,0 +1,35 @@
+﻿@*@namespace Client.Components
+@inherits AntDomComponentBase
+
+<Space Class="@ClassMapper.Class" Size="@("24")">
+    <SpaceItem>
+        <NoticeIcon ClearText="Empty"
+                    ViewMoreText="see more"
+                    Count="_count"
+                    OnClear="HandleClear"
+                    OnViewMore="HandleViewMore">
+            <NoticeList TabKey="notification"
+                        Title="Notifications"
+                        EmptyText="You have viewed all notifications"
+                        ShowViewMore
+                        Data="_notifications" />
+            <NoticeList TabKey="message"
+                        Title="Messages"
+                        EmptyText="You have read all messages"
+                        ShowViewMore
+                        Data="_messages" />
+            <NoticeList TabKey="event"
+                        Title="Upcoming"
+                        EmptyText="You have completed all to do"
+                        ShowViewMore
+                        Data="_events" />
+        </NoticeIcon>
+    </SpaceItem>
+    <SpaceItem>
+        <AvatarDropdown Name="@_currentUser.Name"
+                        Avatar="@_currentUser.Avatar"
+                        MenuItems="@AvatarMenuItems"
+                        OnItemSelected="HandleSelectUser" />
+    </SpaceItem>
+</Space>
+*@

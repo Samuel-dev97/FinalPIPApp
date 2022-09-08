@@ -1,0 +1,121 @@
+﻿[
+  {
+    "path": "/dashboard",
+    "name": "DASHBOARD",
+    "key": "dashboard",
+    "icon": "dashboard"
+  },
+  {
+    "path": "/rdepartments",
+    "name": "DEPARTMENTS",
+    "key": "Rdepartments",
+    "icon": "exception",
+    "exact": true,
+    "hideInMenu": true,
+    "children": [
+      {
+        "path": "/departments",
+        "name": "DEPARTMENTS",
+        "key": "departments",
+        "icon": "check-circle"
+      },
+      {
+        "path": "/departmentbudgets",
+        "name": "BUDGET",
+        "key": "budgets",
+        "icon": "check-circle"
+      }
+
+    ]
+  },
+  {
+    "path": "/remployees",
+    "name": "INCENTIVES",
+    "key": "pressure",
+    "icon": "exception",
+    "exact": true,
+    "hideInMenu": true,
+    "children": [
+      {
+        "path": "/employeeincentives",
+        "name": "PERSONAL",
+        "key": "incentives",
+        "icon": "check-circle"
+      },
+      {
+        "path": "/Employees",
+        "name": "EMPLOYEES",
+        "key": "monthly",
+        "icon": "check-circle"
+      }
+
+
+    ]
+  },
+  {
+    "path": "/paygrade",
+    "name": "PAY GRADES",
+    "key": "result",
+    "icon": "check-circle"
+  },
+  {
+    "path": "/penalties",
+    "name": "PENALTIES",
+    "key": "penalty",
+    "icon": "check-circle"
+  },
+  {
+    "path": "/exception",
+    "name": "REPORTS",
+    "key": "exception",
+    "icon": "exception",
+    "exact": true,
+    "hideInMenu": true,
+    "children": [
+      {
+        "path": "/xxxxx",
+        "name": "DEPARTMENT",
+        "key": "report.400",
+        "children": [
+          {
+            "path": "/reports",
+            "name": "PSL",
+            "key": "report.401"
+          },
+          {
+            "path": "/sssreports",
+            "name": "SSS",
+            "key": "report.402"
+          },
+          {
+            "path": "/csreports",
+            "name": "CS",
+            "key": "report.403"
+          },
+          {
+            "path": "/cfdreports",
+            "name": "COFUND",
+            "key": "report.804"
+          },
+          {
+            "path": "/aslreports",
+            "name": "ASZL",
+            "key": "report.405"
+          },
+          {
+            "path": "/pireports",
+            "name": "PI",
+            "key": "report.406"
+          },
+          {
+            "path": "/zamreports",
+            "name": "ZAMSWITCH",
+            "key": "report.407"
+          }
+        ]
+      }
+     
+     
+    ]
+  }
+]

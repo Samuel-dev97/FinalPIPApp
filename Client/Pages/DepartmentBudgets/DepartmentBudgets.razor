@@ -1,0 +1,299 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "HR,SuperAdmin,Admin")]
+@page "/departmentbudgets"
+
+@using  Shared.Models.Departments
+
+<PageContainer Title="DEPT BUDGETS MANAGEMENT">
+    <PageHeader>
+        <PageHeaderContent>
+            <Row Gutter="16">
+               @* <input Style="position: relative !important;width: 100% !important;height:32px;margin-left: 0 !important;zoom: 1 !important;display: block !important;box-sizing: border-box !important;
+                    border-style: solid; border-color: #F6F6F6; border-radius: 5px;"
+                       Placeholder="Search By Company Name" @bind-value="SearchTerm" @bind-value:event="oninput" />*@
+            </Row>
+        </PageHeaderContent>
+        <PageHeaderExtra>
+          @*  <Button Shape="round" Type="primary" OnClick="@ShowCompanyModal">
+                Add Company
+            </Button>*@
+            <ButtonGroup>
+            <Button Type="@ButtonType.Primary" Danger Icon="plus" OnClick=@(() => OpenModal())>Add New</Button>
+            @*<Button  Type="@ButtonType.Primary" OnClick="Reload">Reload</Button>*@
+            <Button Type="@ButtonType.Primary" Style="background-color: green;border-block-color: green">Search</Button>
+</ButtonGroup>
+        </PageHeaderExtra>
+    </PageHeader>
+    <br />
+    <Spin Spinning=_loading Delay=500 size="large">
+
+        @if (departmentBudgetsResponses != null)
+        {
+        <Table DataSource="@departmentBudgetsResponses" Bordered=@true Size=@TableSize.Middle>
+            <AntDesign.Column @bind-Field="@context.DeptName" Sortable />
+            @* <AntDesign.Column @bind-Field="@context.BudgetAmount" Sortable>
+            </AntDesign.Column>*@
+          @*  <AntDesign.Column @bind-Field="@context.GM" Sortable />*@
+               <AntDesign.Column @bind-Field="@context.PercentegaScore" Sortable />
+ 
+              <AntDesign.Column @bind-Field="@context.Year" Sortable>
+            
+            </AntDesign.Column>
+
+            <ActionColumn Title="ACTIONS">
+                <Space>
+                    <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => OpenModal(@context.Id))">
+                            Edit
+                        </Button>
+                    </SpaceItem>
+                     <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => open(@context.Id))">
+                            Calculate
+                        </Button>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+        }
+
+    </Spin>
+</PageContainer>
+
+<Modal Title="@title"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       Footer=null>
+       <Form @ref="form" Model="@AddEditDepartmentBudgets" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+             <Row Gutter="(16,24)">
+               <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Select Dept</Text>
+                           <Select DataSource="@departmentsResponses"
+                        @bind-Value="@AddEditDepartmentBudgets.DepartmentId"
+                        LabelName="@nameof(DepartmentsResponse.DeptName)"
+                        ValueName="@nameof(DepartmentsResponse.Id)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Department"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+                    </FormItem>
+
+                </AntDesign.Col>
+            @* <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Annual Budget</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.BudgetAmount" />
+                    </FormItem>
+                </AntDesign.Col>*@
+               @*  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Gross Margin Achivied</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.GM" />
+                    </FormItem>
+                    <FormItem>
+                        <Text>Enter Month Number</Text>
+                      <Input  TValue="int?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.Month" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                @* <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Percentage Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.PercentegaScore" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                @* <br />
+                 <br />
+                 <Text>Quarterly Estimates For : </Text>
+                 <br />
+                 <br />
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Year</Text>
+                      <Input  TValue="string?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.Year" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>First Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q1" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Second Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q2" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Third Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q3" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Fourth Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q4" />
+                    </FormItem>
+                </AntDesign.Col>*@
+            </Row>
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Button Danger="true" Block="true" OnClick="HandleCancel">
+                        Cancel
+                    </Button>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+            
+                    @if(AddEditDepartmentBudgets.Id == 0)
+                    {
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Add
+                        </Button>
+                        
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                       
+                    }
+
+                </AntDesign.Col>
+            </Row>
+        </Form>
+</Modal>
+ <Drawer Closable="true" Width="720" Visible="visible" Placement="@placement" Title='("Calculate Budget")' OnClose="_=>close()">
+    <Template style="height:100%">
+     <Form @ref="form"  Model="@AddEditDepartmentBudgets" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+ 
+         <Row Gutter="16">
+                            <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Selected Department</Text>
+                           <Select DataSource="@departmentsResponses"
+                        @bind-Value="@AddEditDepartmentBudgets.DepartmentId"
+                        LabelName="@nameof(DepartmentsResponse.DeptName)"
+                        ValueName="@nameof(DepartmentsResponse.Id)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Department"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+
+                    </FormItem>
+
+                </AntDesign.Col>
+             <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Annual Budget</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.BudgetAmount" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Gross Margin Achivied</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.GM" />
+                    </FormItem>
+                    <FormItem>
+                        <Text>Enter Month Number</Text>
+                      <Input  TValue="int?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.Month" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Percentage Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.PercentegaScore" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <br />
+                 <br />
+                 <Text>Quarterly Estimates For : </Text>
+                 <br />
+                 <br />
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Year</Text>
+                      <Input  TValue="string?" Style="width: 100%" @bind-Value="@AddEditDepartmentBudgets.Year" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>First Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q1" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Second Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q2" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Third Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q3" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Fourth Quarter</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditDepartmentBudgets.Q4" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                
+            </Row>
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Button Danger="true" Block="true" OnClick="HandleCancel">
+                        Cancel
+                    </Button>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+            
+                    @if(AddEditDepartmentBudgets.Id == 0)
+                    {
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Add
+                        </Button>
+                         <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="Calculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                         <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="Calculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+                    }
+
+                </AntDesign.Col>
+    
+          </Row>
+        </Form>
+    </Template>
+</Drawer>

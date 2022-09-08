@@ -1,0 +1,222 @@
+﻿@page "/employees"
+@using  Shared.Models.Departments
+@using  Shared.Models.PayGrades
+@using Syncfusion.Pdf
+@using Syncfusion.Pdf.Grid;
+@using Syncfusion.Drawing;
+@using Syncfusion.Pdf.Graphics;
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.IO;
+
+
+
+<PageContainer Title="EMPLOYEE MANAGEMENT">
+    <PageHeader>
+        <PageHeaderContent>
+            <Row Gutter="16">
+               @* <input Style="position: relative !important;width: 100% !important;height:32px;margin-left: 0 !important;zoom: 1 !important;display: block !important;box-sizing: border-box !important;
+                    border-style: solid; border-color: #F6F6F6; border-radius: 5px;"
+                       Placeholder="Search By Company Name" @bind-value="SearchTerm" @bind-value:event="oninput" />*@
+            </Row>
+        </PageHeaderContent>
+        <PageHeaderExtra>
+          @*  <Button Shape="round" Type="primary" OnClick="@ShowCompanyModal">
+                Add Company
+            </Button>*@
+            <ButtonGroup>
+            <Button Type="@ButtonType.Primary" Danger Icon="plus" OnClick=@(() => OpenModal())>Add New</Button>
+            @*<Button  Type="@ButtonType.Primary" OnClick="Reload">Reload</Button>*@
+            <Button Type="@ButtonType.Primary" Style="background-color: green;border-block-color: green">Search</Button>
+           
+</ButtonGroup>
+        </PageHeaderExtra>
+    </PageHeader>
+    <br />
+    <Spin Spinning=_loading Delay=500 size="large">
+      
+        @if (employeeResponses != null)
+        {
+        <Table DataSource="@employeeResponses" Bordered=@true Size=@TableSize.Small>
+           <AntDesign.Column @bind-Field="@context.FirstName" Sortable >
+            </AntDesign.Column>
+<AntDesign.Column @bind-Field="@context.LastName" Sortable />
+@*<AntDesign.Column @bind-Field="@context.MiddleName" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.EmploymentStatus" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.EmploymentStatusId" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.DOB" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.Gender" Sortable />*@
+<AntDesign.Column @bind-Field="@context.BasicPay" Sortable />
+<AntDesign.Column @bind-Field="@context.DeptName" Sortable />
+<AntDesign.Column @bind-Field="@context.PayName" Sortable />
+@*<AntDesign.Column @bind-Field="@context.City" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.Nationality" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.NAPSA" Sortable />*@
+
+@*<AntDesign.Column @bind-Field="@context.TerminationDate" Sortable />
+<AntDesign.Column @bind-Field="@context.ConfirmationDate" Sortable />
+<AntDesign.Column @bind-Field="@context.JoinedDate" Sortable />*@
+
+@*<AntDesign.Column @bind-Field="@context.PrivateEmail" Sortable />*@
+<AntDesign.Column @bind-Field="@context.WorkEmail" Sortable />
+<AntDesign.Column @bind-Field="@context.MobilePhone" Sortable>
+            </AntDesign.Column>
+             
+            <ActionColumn Title="ACTION">
+                <Space>
+                    <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => OpenModal(@context.Id))">
+                            Edit
+                        </Button>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+        }
+
+    </Spin>
+</PageContainer>
+
+<Modal Title="@title"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       Footer=null>
+       <Form @ref="form" Model="@AddEditEmployee" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+            <Row Gutter="(16,24)">
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>First Name</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditEmployee.FirstName" />
+                    </FormItem>
+                </AntDesign.Col>
+               <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Last Name</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditEmployee.LastName" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Monthly PIP</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployee.BasicPay" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Select PayGrade</Text>
+                           <Select DataSource="@payGradeResponses"
+                        @bind-Value="@AddEditEmployee.PayGradeId"
+                        LabelName="@nameof(PayGradeResponse.Name)"
+                        ValueName="@nameof(PayGradeResponse.Id)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Pay Grade Name"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                       
+                </Select>
+
+
+                    </FormItem>
+               </AntDesign.Col> 
+               <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Select Package PayGrade</Text>
+                           <Select DataSource="@payGradeResponses"
+                        @bind-Value="@AddEditEmployee.BasicPay"
+                        LabelName="@nameof(PayGradeResponse.Name)"
+                        ValueName="@nameof(PayGradeResponse.Monthly)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Pay Grade Name"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                       
+                </Select>
+
+
+                    </FormItem>
+               </AntDesign.Col> 
+    
+                   
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Select Dept</Text>
+                           <Select DataSource="@departmentsResponses"
+                        @bind-Value="@AddEditEmployee.DepartmentId"
+                        LabelName="@nameof(DepartmentsResponse.DeptName)"
+                        ValueName="@nameof(DepartmentsResponse.Id)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Department"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+
+                    </FormItem>
+               </AntDesign.Col> 
+                 <AntDesign.Col Class="gutter-row" Span="12">
+                    <FormItem>
+                        <Text>MobilePhone</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditEmployee.MobilePhone" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>WorkEmail</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditEmployee.WorkEmail" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Termination Date</Text>
+                      <DatePicker  TValue="DateTime?"  Picker="@DatePickerType.Date" Style="width: 100%" @bind-Value="@AddEditEmployee.TerminationDate" />
+                    </FormItem>
+                 </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Joined Date</Text>
+                       <DatePicker  TValue="DateTime?"  Picker="@DatePickerType.Date" Style="width: 100%" @bind-Value="@AddEditEmployee.JoinedDate" />
+                    </FormItem>
+                  </AntDesign.Col>
+               
+
+
+            </Row>
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Button Danger="true" Block="true" OnClick="HandleCancel">
+                        Cancel
+                    </Button>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+            
+                    @if(AddEditEmployee.Id == 0)
+                    {
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Add
+                        </Button>
+                      @*  <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="OnSelectedItemChangedHandler" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>*@
+  
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                    }
+
+                </AntDesign.Col>
+            </Row>
+        </Form>
+</Modal>
+
+

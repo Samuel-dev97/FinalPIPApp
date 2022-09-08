@@ -1,0 +1,487 @@
+﻿@page "/zamreports"
+
+
+
+@using  Shared.Models.Employee
+@using  Shared.Models.Departments
+@using  Shared.Models.Penalties
+@using  Shared.Models.EmployeeIncetives
+
+<PageContainer Title="MONTHLY INCENTIVES MANAGEMENT">
+    <PageHeader>
+        <PageHeaderContent>
+            <Row Gutter="16">
+               @* <input Style="position: relative !important;width: 100% !important;height:32px;margin-left: 0 !important;zoom: 1 !important;display: block !important;box-sizing: border-box !important;
+                    border-style: solid; border-color: #F6F6F6; border-radius: 5px;"
+                       Placeholder="Search By Company Name" @bind-value="SearchTerm" @bind-value:event="oninput" />*@
+            </Row>
+        </PageHeaderContent>
+        <PageHeaderExtra>
+          @*  <Button Shape="round" Type="primary" OnClick="@ShowCompanyModal">
+                Add Company
+            </Button>*@
+            <ButtonGroup>
+           @* <Button Type="@ButtonType.Primary" Danger Icon="plus" @onclick="_=>OpenModal()">Add New</Button>
+           *@
+            @*<Button  Type="@ButtonType.Primary" OnClick="Reload">Reload</Button>*@
+            <Button Type="@ButtonType.Primary" Style="background-color: green;border-block-color: green" @onclick="_=>OnFinish()">Export To PDF</Button>
+           
+</ButtonGroup>
+        </PageHeaderExtra>
+    </PageHeader>
+    <br />
+    <Spin Spinning=_loading Delay=500 size="large">
+
+        @if (employeeIncentivesResponses != null)
+        {
+        <Table DataSource="@employeeIncentivesResponses" Bordered=@true Size=@TableSize.Small>
+       
+
+              <AntDesign.Column @bind-Field="@context.LastName" Sortable />
+              <AntDesign.Column @bind-Field="@context.FirstName" Sortable>
+            </AntDesign.Column>
+            
+            <AntDesign.Column @bind-Field="@context.PIPPayableMonthly" Sortable />
+      
+              
+            <ActionColumn Title="ACTION">
+                <Space>
+                    <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => OpenModal(@context.Id))">
+                            Authorise
+                        </Button>
+                        
+                    </SpaceItem>
+                    <br />
+                     <br />
+                </Space>
+            </ActionColumn>
+        </Table>
+        }
+
+    </Spin>
+</PageContainer>
+
+<Modal Title="@title"
+       Visible="@_visible"
+       OnOk="@HandleOk" 
+       OnCancel="@HandleCancel"
+       Footer=null>
+       <Form @ref="form" Model="@AddEditEmployeeIncentives" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+            
+           <Row Gutter="16">
+@*
+                                  <AntDesign.Col Span="12">
+                    <FormItem>
+                           <Text>Select Employee</Text>
+                           <Select DataSource="@employeeResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.FullName"
+                        LabelName="@nameof(EmployeeResponse.FirstName)"
+                        ValueName="@nameof(EmployeeResponse.Id)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Choose Employee"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+
+                    </FormItem>
+                 </AntDesign.Col> *@
+                   @*<AntDesign.Col Span="12">
+                    <FormItem>
+                           <Text>Comfirm Employee</Text>
+                           <Select DataSource="@employeeResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.TotalMonthlyPIP"
+                        LabelName="@nameof(EmployeeResponse.LastName)"
+                        ValueName="@nameof(EmployeeResponse.BasicPay)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Choose Employee"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+
+                    </FormItem>
+                 </AntDesign.Col> *@
+                 @*  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Monthly PIP</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.TotalMonthlyPIP" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                @*  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Final Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.FinalScore" />
+                    </FormItem>
+                </AntDesign.Col>*@
+
+              
+                @* <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Comfirm Department</Text>
+                           <Select DataSource="@departmentBudgetsResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.PIPPayableMonthly"
+                        LabelName="@nameof(DepartmentBudgetsResponse.DeptName)"
+                        ValueName="@nameof(DepartmentBudgetsResponse.PercentegaScore)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Department"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+                    </FormItem>
+               </AntDesign.Col> *@
+               @*   <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Full Name</Text>
+                      <Input  TValue="string" Style="width: 100%" ReadOnly  @bind-Value="@AddEditEmployeeIncentives.ForeName" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Full Name</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.ForeName" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>HR Authorize</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.FirstAuth" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>HOD Authorize</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.SecondAuth" />
+                    </FormItem>
+                </AntDesign.Col>
+                   <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>MD Authorize</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.ThirdAuth" />
+                    </FormItem>
+                </AntDesign.Col>
+               
+               @*  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Authorize</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.FirstAuth" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>HOD Comment</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.Comment1" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>MD Comment</Text>
+                      <Input  TValue="string" Style="width: 100%"   @bind-Value="@AddEditEmployeeIncentives.Comment2" />
+                    </FormItem>
+                </AntDesign.Col>
+       
+            </Row>
+           
+                <br/>
+
+                <br/>
+                <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                 
+                    @if(AddEditEmployeeIncentives.Id == 0)
+                    {
+
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Submit
+                        </Button>
+                       
+
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                       
+                    }
+
+                </AntDesign.Col>
+            </Row>
+        </Form>
+</Modal>
+
+<Drawer Closable="true" Width="@wdFirstLayer" Visible="visible1" Placement="@placement" Title='("Add Incentives")' OnClose="_=>close()">
+    <Template style="height:100%">
+         <Form @ref="form" Model="@AddEditEmployeeIncentives" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+           
+            @* <Row Gutter="16">
+                <AntDesign.Col Span="24">
+                    <p style="font-weight: bold;">Personal Infor</p>
+                </AntDesign.Col>
+
+            </Row>*@
+                      <Row Gutter="16">
+
+                                 <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Comfirm Department</Text>
+                           <Select DataSource="@departmentBudgetsResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.PIPPayableMonthly"
+                        LabelName="@nameof(DepartmentBudgetsResponse.DeptName)"
+                        ValueName="@nameof(DepartmentBudgetsResponse.PercentegaScore)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Comfirm Department"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+                    </FormItem>
+               </AntDesign.Col>  
+                   <AntDesign.Col Span="12">
+                    <FormItem>
+                           <Text>Comfirm Employee</Text>
+                           <Select DataSource="@employeeResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.TotalMonthlyPIP"
+                        LabelName="@nameof(EmployeeResponse.FullName)"
+                        ValueName="@nameof(EmployeeResponse.BasicPay)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Choose Employee"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+                    </FormItem>
+                 </AntDesign.Col> 
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Date</Text>
+                      <DatePicker  TValue="String"  Picker="@DatePickerType.Date" Style="width: 100%" @bind-Value="@AddEditEmployeeIncentives.Date" />
+                    </FormItem>
+                 </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Monthly PIP</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.TotalMonthlyPIP" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Final Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.FinalScore" />
+                    </FormItem>
+                </AntDesign.Col>
+
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Percentage Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly  @bind-Value="@AddEditEmployeeIncentives.PIPPayableMonthly" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Mid Month Pay</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly  @bind-Value="@AddEditEmployeeIncentives.Pay" />
+                    </FormItem>
+                </AntDesign.Col>
+            </Row>
+             <Row Gutter="16">
+                <AntDesign.Col Span="15">
+                     @if(AddEditEmployeeIncentives.Id == -1)
+                    {
+
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                <p style="font-weight: bold;">Please Select Employee</p>
+                        </Button>
+
+                    }
+                    else
+                    {
+                        <p style="font-weight: bold;">Please Only Click On Penalties if Applicable</p>
+                    }
+
+                </AntDesign.Col>
+
+            </Row>
+           
+                <br/>
+
+                <br/>
+                <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                 
+                    @if(AddEditEmployeeIncentives.Id == 0)
+                    {
+
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Submit
+                        </Button>
+                        <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="Calculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+                         <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  Danger Icon="minus" OnClick="@(() => ShowDrawer(@context.Id))" Block="true" Loading="_loading">
+                                Apply Penalties
+                        </Button>
+
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                         <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="Calculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+                         <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  Danger Icon="minus" OnClick="@(() => ShowDrawer(@context.Id))" Block="true" Loading="_loading">
+                                Apply Penalties
+                        </Button>
+                    }
+
+                </AntDesign.Col>
+            </Row>
+          
+
+        </Form>
+    </Template>
+    @* 2nd Drawer*@
+      <Drawer Closable="true" Width="@wd2ndLayer" Visible="visible2" Placement="@placement" Title='("Apply Penalties")' OnClose="_=>CloseDrawer()">
+    <Template style="height:100%">
+         <Form @ref="form" Model="@AddEditEmployeeIncentives" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+           
+            @* <Row Gutter="16">
+                <AntDesign.Col Span="24">
+                    <p style="font-weight: bold;">Personal Infor</p>
+                </AntDesign.Col>
+
+            </Row>*@
+                      <Row Gutter="16">
+                                             <AntDesign.Col Span="12">
+                    <FormItem>
+                           <Text>Selected Employee</Text>
+                           <Select DataSource="@employeeResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.TotalMonthlyPIP"
+                        LabelName="@nameof(EmployeeResponse.FullName)"
+                        ValueName="@nameof(EmployeeResponse.BasicPay)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Choose Employee"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+
+                    </FormItem>
+                 </AntDesign.Col> 
+
+                                 <AntDesign.Col Span="12">
+                    <FormItem>
+                          <Text>Select Penalty</Text>
+                           <Select DataSource="@penaltiesResponses"
+                        @bind-Value="@AddEditEmployeeIncentives.PenaltyCharge"
+                        LabelName="@nameof(PenaltiesResponse.PenaltyName)"
+                        ValueName="@nameof(PenaltiesResponse.Charge)"
+                        Style="width:212px"
+                        DefaultValue="2"
+                        Placeholder="Select Penalty"
+                        DefaultActiveFirstItem
+                        IgnoreItemChanges="false"
+                        AllowClear>
+                </Select>
+
+                    </FormItem>
+               </AntDesign.Col>  
+
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Penalty Charge</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.PenaltyCharge" />
+                    </FormItem>
+                </AntDesign.Col>
+                @* <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Number Of Times To Apply Penalty</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" @bind-Value="@AddEditEmployeeIncentives.Times" />
+                    </FormItem>
+                </AntDesign.Col>*@
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Final Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly @bind-Value="@AddEditEmployeeIncentives.FinalScore" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Percentage Score</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly  @bind-Value="@AddEditEmployeeIncentives.PIPPayableMonthly" />
+                    </FormItem>
+                </AntDesign.Col>
+                  <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Mid Month Pay</Text>
+                      <Input  TValue="decimal?" Style="width: 100%" ReadOnly  @bind-Value="@AddEditEmployeeIncentives.Pay" />
+                    </FormItem>
+                </AntDesign.Col>
+       
+            </Row>
+             <Row Gutter="16">
+              
+
+            </Row>
+           
+                <br/>
+
+                <br/>
+                <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                 
+                    @if(AddEditEmployeeIncentives.Id == 0)
+                    {
+
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Submit
+                        </Button>
+                        <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="PenaltyCalculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                         <br />
+                         <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="PenaltyCalculate" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>
+                    }
+
+                </AntDesign.Col>
+            </Row>
+     
+        </Form>
+    </Template>
+</Drawer>
+</Drawer>

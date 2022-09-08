@@ -1,0 +1,129 @@
+﻿@page "/reports/t"
+
+@inject IJSRuntime _jsRuntime;
+@using Syncfusion.Pdf
+@using Syncfusion.Pdf.Grid;
+@using Syncfusion.Drawing;
+@using Syncfusion.Pdf.Graphics;
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.IO;
+
+
+<PageContainer Title="EMPLOYEE MANAGEMENT">
+    <PageHeader>
+        <PageHeaderContent>
+            <Row Gutter="16">
+               @* <input Style="position: relative !important;width: 100% !important;height:32px;margin-left: 0 !important;zoom: 1 !important;display: block !important;box-sizing: border-box !important;
+                    border-style: solid; border-color: #F6F6F6; border-radius: 5px;"
+                       Placeholder="Search By Company Name" @bind-value="SearchTerm" @bind-value:event="oninput" />*@
+            </Row>
+        </PageHeaderContent>
+        <PageHeaderExtra>
+          @*  <Button Shape="round" Type="primary" OnClick="@ShowCompanyModal">
+                Add Company
+            </Button>*@
+            <ButtonGroup>
+            @*<Button Type="@ButtonType.Primary" Danger Icon="plus" OnClick=@(() => OpenModal())>Add New</Button>
+            @*<Button  Type="@ButtonType.Primary" OnClick="Reload">Reload</Button>*@
+@*            <Button Type="@ButtonType.Primary" @onclick="@OnFinish"  Style="background-color: green;border-block-color: green">Search</Button>*@
+            <button class="btn btn-primary" @onclick="@OnFinish">Export to PDF</button>
+</ButtonGroup>
+        </PageHeaderExtra>
+    </PageHeader>
+    <br />
+    <Spin Spinning=_loading Delay=500 size="large">
+      
+        @if (employeeResponses != null)
+        {
+        <Table DataSource="@employeeResponses" Bordered=@true Size=@TableSize.Small>
+           <AntDesign.Column @bind-Field="@context.FirstName" Sortable >
+            </AntDesign.Column>
+<AntDesign.Column @bind-Field="@context.LastName" Sortable />
+@*<AntDesign.Column @bind-Field="@context.MiddleName" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.EmploymentStatus" Sortable />*@
+<AntDesign.Column @bind-Field="@context.EmploymentStatusId" Sortable />
+@*<AntDesign.Column @bind-Field="@context.DOB" Sortable />*@
+<AntDesign.Column @bind-Field="@context.Gender" Sortable />
+<AntDesign.Column @bind-Field="@context.BasicPay" Sortable />
+<AntDesign.Column @bind-Field="@context.DeptName" Sortable />
+<AntDesign.Column @bind-Field="@context.PayName" Sortable />
+@*<AntDesign.Column @bind-Field="@context.City" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.Nationality" Sortable />*@
+@*<AntDesign.Column @bind-Field="@context.NAPSA" Sortable />*@
+
+@*<AntDesign.Column @bind-Field="@context.TerminationDate" Sortable />
+<AntDesign.Column @bind-Field="@context.ConfirmationDate" Sortable />
+<AntDesign.Column @bind-Field="@context.JoinedDate" Sortable />*@
+
+@*<AntDesign.Column @bind-Field="@context.PrivateEmail" Sortable />*@
+<AntDesign.Column @bind-Field="@context.WorkEmail" Sortable />
+<AntDesign.Column @bind-Field="@context.MobilePhone" Sortable>
+            </AntDesign.Column>
+            
+                       
+                       
+                 
+             
+
+            <ActionColumn Title="ACTION">
+                <Space>
+                    <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => OpenModal(@context.Id))">
+                            Edit
+                        </Button>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+        }
+
+    </Spin>
+</PageContainer>
+<Modal Title="@title"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       Footer=null>
+       <Form @ref="form" Model="@AddEditEmployee" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+            <Row Gutter="(16,24)">
+              
+
+
+            </Row>
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Button Danger="true" Block="true" OnClick="HandleCancel">
+                        Cancel
+                    </Button>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+            
+                    @if(AddEditEmployee.Id == 0)
+                    {
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Add
+                        </Button>
+                      @*  <br />
+                        <br />
+                         <Button Type="@ButtonType.Primary"  OnClick="OnSelectedItemChangedHandler" Block="true" Loading="_loading">
+                                Calculate
+                        </Button>*@
+  
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                         <Button Type="@ButtonType.Primary" @onclick="@OnFinish" Block="true" Loading="_loading">
+                                EXPORT
+                        </Button>
+                         
+                    }
+
+                </AntDesign.Col>
+            </Row>
+        </Form>
+</Modal>
+
+

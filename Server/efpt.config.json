@@ -1,0 +1,211 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "PIPContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "Server",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[DepartmentBudgets]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Departments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthlies]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentives]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PayGrades]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Penalties]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DepartmentBudgetsALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentBudgetsCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentBudgetsDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentBudgetsSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentBudgetsUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentsALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentsCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentsDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentsSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DepartmentsUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthliesALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthliesCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthliesDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthliesSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentiveMonthliesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentivesALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentivesCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentivesDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentivesSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeeIncentivesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeesALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeesCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeesDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeesSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeIncentivesCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[EmployeIncentivesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAllEmployeesReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PayGradesALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PayGradesCREATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PayGradesDELETE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PayGradesSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PayGradesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PenaltiesALL]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PenaltiesSINGLE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PenaltiesUPDATE]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PenaltyCREATE]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": "desktop-315ko7n\\sqlexpress.LoftERP.PIP.dbo",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": true,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

@@ -1,0 +1,40 @@
+﻿@namespace Client
+@inherits LayoutComponentBase
+@using Microsoft.Extensions.Configuration
+@using Microsoft.AspNetCore.Cors
+
+<AuthorizeView>
+    <Authorized>
+        <AntDesign.ProLayout.BasicLayout 
+    Logo="@("https://scontent.flun1-3.fna.fbcdn.net/v/t1.15752-9/284577022_1157371448162852_1594462894782281625_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=ae9488&_nc_eui2=AeG9QovdcHI4gPknikxYQNeaW7VPMjv_BZhbtU8yO_8FmE0XxdyrEt8KON6sJ5g66mKvOBSm_sQEe1WAi5W4j_S9&_nc_ohc=vtX2-srGc9QAX9Tvuxj&_nc_ht=scontent.flun1-3.fna&oh=03_AVIsi2h5XTofl5wHNo41LQDAbXYp4QZIguhyOiIVaG24Sg&oe=62C1D071")"
+    
+    MenuData="_menuData">
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <FooterRender>
+        @*<FooterView Copyright="2022 Ant Design Blazor"></FooterView>*@
+    </FooterRender>
+</AntDesign.ProLayout.BasicLayout>
+@*<SettingDrawer/>*@ 
+    </Authorized>
+    <NotAuthorized>
+        @Body
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@code
+{
+    [Inject] private IConfiguration Configuration { get; set; }
+    private MenuDataItem[] _menuData = { };
+
+    [Inject] public HttpClient HttpClient { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+          var link = String.Format($"https://{@Configuration["NavUrl"]}:{@Configuration["NavUrlPort"]}/Data/menu.json");
+        _menuData = await HttpClient.GetFromJsonAsync<MenuDataItem[]>(link);
+    }
+}

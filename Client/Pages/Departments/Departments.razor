@@ -1,0 +1,121 @@
+﻿@page "/departments"
+
+
+<PageContainer Title="DEPT MANAGEMENT">
+    <PageHeader>
+        <PageHeaderContent>
+            <Row Gutter="16">
+               @* <input Style="position: relative !important;width: 100% !important;height:32px;margin-left: 0 !important;zoom: 1 !important;display: block !important;box-sizing: border-box !important;
+                    border-style: solid; border-color: #F6F6F6; border-radius: 5px;"
+                       Placeholder="Search By Company Name" @bind-value="SearchTerm" @bind-value:event="oninput" />*@
+            </Row>
+        </PageHeaderContent>
+        <PageHeaderExtra>
+          @*  <Button Shape="round" Type="primary" OnClick="@ShowCompanyModal">
+                Add Company
+            </Button>*@
+            <ButtonGroup>
+            <Button Type="@ButtonType.Primary" Danger Icon="plus" OnClick=@(() => OpenModal())>Add New</Button>
+            @*<Button  Type="@ButtonType.Primary" OnClick="Reload">Reload</Button>*@
+            <Button Type="@ButtonType.Primary" Style="background-color: green;border-block-color: green">Search</Button>
+</ButtonGroup>
+        </PageHeaderExtra>
+    </PageHeader>
+    <br />
+    <Spin Spinning=_loading Delay=500 size="large">
+
+        @if (departmentsResponses != null)
+        {
+        <Table DataSource="@departmentsResponses" Bordered=@true Size=@TableSize.Small>
+            <AntDesign.Column @bind-Field="@context.logo" Sortable >
+                <Image
+		   Width="59" 
+		   Src="@(context.logo)"
+		   />
+                </AntDesign.Column>
+            <AntDesign.Column @bind-Field="@context.DeptName" Sortable>
+            </AntDesign.Column>
+            <AntDesign.Column @bind-Field="@context.Code" Sortable />
+            <AntDesign.Column @bind-Field="@context.Description" Sortable />
+            <AntDesign.Column @bind-Field="@context.Specification" Sortable>
+            
+            </AntDesign.Column>
+           
+            <ActionColumn Title="ACTION">
+                <Space>
+                    <SpaceItem>
+                        <Button Icon="edit" Type="primary" Shape="round" OnClick="@(() => OpenModal(@context.Id))">
+                            Edit
+                        </Button>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+        }
+
+    </Spin>
+</PageContainer>
+
+<Modal Title="@title"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       Footer=null>
+       <Form @ref="form" Model="@AddEditDepartments" OnFinish="SaveAsync" OnFinishFailed="OnFinishFailed">
+            <Row Gutter="(16,24)">
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Logo</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditDepartments.logo" />
+                    </FormItem>
+                </AntDesign.Col>
+               <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Department Name</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditDepartments.DeptName" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Department Code</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditDepartments.Code" />
+                    </FormItem>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Description</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditDepartments.Description" />
+                    </FormItem>
+                </AntDesign.Col>
+                 <AntDesign.Col Span="12">
+                    <FormItem>
+                        <Text>Description</Text>
+                      <Input  TValue="string" Style="width: 100%" @bind-Value="@AddEditDepartments.Specification" />
+                    </FormItem>
+                </AntDesign.Col>
+            </Row>
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Button Danger="true" Block="true" OnClick="HandleCancel">
+                        Cancel
+                    </Button>
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+            
+                    @if(AddEditDepartments.Id == 0)
+                    {
+                        <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Add
+                        </Button>
+                    }
+                    else
+                    {
+                      <Button Type="@ButtonType.Primary" HtmlType="submit" Block="true" Loading="_loading">
+                                Update
+                        </Button>
+                    }
+
+                </AntDesign.Col>
+            </Row>
+        </Form>
+</Modal>

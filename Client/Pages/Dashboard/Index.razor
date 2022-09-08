@@ -1,0 +1,124 @@
+﻿
+@page "/dashboard"
+@attribute [Authorize]
+
+
+
+<PageContainer Title="DASHBOARD">
+    <div style="padding: 20px;">
+        <Row Gutter="16">
+
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:green" Type="bank" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        DEPARTMENTS
+                    </Row>
+                    <Row>
+                        @*@townCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:darkmagenta" Type="book" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        PAYGRADES
+                    </Row>
+                    <Row>
+                       @* @companyCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:orangered" Type="star" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        INCENTIVES
+                    </Row>
+                    <Row>
+                       @* @locationCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+            <AntDesign.Col Span="6">
+            <Card Bordered
+                  Hoverable
+                  BodyStyle="padding-bottom: 20px;">
+                <Row>
+                    <AntDesign.Col Span="6">
+                    <Icon Style="font-size:50px;Color:red" Type="file" Theme="fill" />
+                    </AntDesign.Col>
+                    <AntDesign.Col Span="6">
+                    <Row>
+                        EMPLOYEES
+                    </Row>
+                    <Row>
+                        @*@guardCount*@
+                    </Row>
+                    </AntDesign.Col>
+                </Row>
+            </Card>
+            </AntDesign.Col>
+        </Row>
+    </div>
+ 
+</PageContainer>
+
+@code { string actualPip;
+            string score;
+            string expectedPip;
+            string mdPenalty;
+            void AddNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) + Convert.ToDouble(score)).ToString();
+            }
+             void Calculate()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) * Convert.ToDouble(score) - Convert.ToDouble(mdPenalty) ).ToString();
+            }
+            void SubtractNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) - Convert.ToDouble(score)).ToString();
+            }
+            void MultiplyNumbers()
+            {
+                expectedPip = (Convert.ToDouble(actualPip) * Convert.ToDouble(score)).ToString();
+            }
+            void DivideNumbers()
+            {
+                if (Convert.ToDouble(score) != 0)
+                {
+                    expectedPip = (Convert.ToDouble(actualPip) / Convert.ToDouble(score)).ToString();
+                }
+                else
+                {
+                    expectedPip = "Cannot Divide by Zero";
+                }
+            } 
+            private string txtValue { get; set; }
+            }
